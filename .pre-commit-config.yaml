@@ -1,0 +1,36 @@
+default_stages: [pre-commit, pre-push]
+exclude: |
+  (?x)(
+    htscode.csv
+  )
+fail_fast: false
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      # check and format the syntax
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: check-json
+      - id: check-yaml
+      - id: double-quote-string-fixer
+      # check the git-related commit or object
+      - id: check-merge-conflict
+      - id: check-added-large-files
+      # check sensitive information
+      - id: debug-statements
+      - id: detect-private-key
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.11.12
+    hooks:
+      - id: ruff
+        args: [--fix, --exit-non-zero-on-fix]
+  - repo: https://github.com/psf/black
+    rev: 25.1.0
+    hooks:
+      - id: black
+        language_version: python3.12
+        args:
+          - --target-version=py312
+          - --line-length=120
+          - --skip-string-normalization
