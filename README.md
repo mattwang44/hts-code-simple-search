@@ -4,50 +4,56 @@ A simple static website for looking up Harmonized Tariff Schedule (HTS) codes. T
 
 ## Usage
 
-Access the data through these URL patterns:
+```sh
+> curl "https://mattwang44.github.io/hts-code-simple-search/" -sS | jq
+{
+   "available_codes": [
+      "0101.21.00.10",
+      "0101.21.00.20",
+      ...
+      "9922.52.11",
+      "9922.52.12"
+   ],
+   "total_codes": 23655
+}
+```
 
-- List all available codes: `https://mattwang44.github.io/hts-code-simple-search/index`
-- Get specific code data: `https://mattwang44.github.io/hts-code-simple-search/<code>`
-- Search partial codes: `https://mattwang44.github.io/hts-code-simple-search/<partial_code>`
-
-Example searches:
-- Category level: `https://mattwang44.github.io/hts-code-simple-search/0101`
-- Subcategory level: `https://mattwang44.github.io/hts-code-simple-search/0101.21`
-- Full code: `https://mattwang44.github.io/hts-code-simple-search/0101.21.00`
-- Most detailed level: `https://mattwang44.github.io/hts-code-simple-search/0101.21.00.10`
+```sh
+> curl "https://mattwang44.github.io/hts-code-simple-search/codes/0202.20.10.00" -sS | jq
+{
+  "HTS Number": "0202.20.10.00",
+  "Indent": 4,
+  "Description": "High-quality beef cuts",
+  "Unit of Quantity": [
+    "kg"
+  ],
+  "General Rate of Duty": "4%",
+  "Special Rate of Duty": "Free (A+,AU,BH,CL,CO,D,E*,IL,JO,KR,MA,OM,P,PA,PE,S,SG)",
+  "Column 2 Rate of Duty": "20%"
+}
+```
 
 ## Development
 
-1. Install dependencies:
+1. Place your `htscode.csv` file in the root directory. You can download it from the USITC website:
    ```bash
-   pip install -r requirements.txt
+   curl 'https://hts.usitc.gov/reststop/exportList?from=0000&to=9999.99.9999&format=CSV&styles=false' > htscode.csv
    ```
 
-2. Place your `htscode.csv` file in the root directory.
-
-3. Run the build script:
+2. Run the build script:
    ```bash
-   python build.py
+   uv run build.py
    ```
 
-This will generate static JSON files in the `dist` directory. The files are automatically deployed to GitHub Pages when pushed to the main branch.
-
-## Data Format
-
-Each HTS code entry contains:
-- HTS Number
-- Description
-- Unit of Quantity
-- Other relevant fields from the CSV
+This will generate static JSON files in the `dist` directory.
 
 ## Deployment
 
 The site is automatically deployed to GitHub Pages using GitHub Actions when changes are pushed to the main branch. The workflow:
 
 1. Sets up Python
-2. Installs dependencies
-3. Runs the build script
-4. Deploys generated files to GitHub Pages
+2. Runs the build script
+3. Deploys generated files to GitHub Pages
 
 ## License
 

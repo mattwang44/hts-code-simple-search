@@ -111,12 +111,6 @@ def main():
             {
                 'available_codes': codes,
                 'total_codes': len(codes),
-                'example_searches': [
-                    '0101',  # Category level
-                    '0101.21',  # Subcategory level
-                    '0101.21.00',  # Full code
-                    '0101.21.00.10',  # Most detailed level
-                ],
             },
             ensure_ascii=False,
             indent=None,
